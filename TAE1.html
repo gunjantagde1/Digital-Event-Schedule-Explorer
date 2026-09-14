@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Digital Event Schedule Explorer</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gradient-to-br from-blue-300 via-pink-300 to-purple-400 text-gray-800">
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="bg-gradient-to-tr from-pink-400 to-purple-400 shadow-sm sticky top-0 z-50">
+
+        <div class="max-w-7xl mx-auto px-6 py-6
+                    flex justify-between items-center">
+
+            <h1 class="text-2xl font-bold text-slate-600">
+                Event Explorer
+            </h1>
+
+            <div class="hidden md:flex gap-8 font-medium">
+
+                <a href="#home"
+                   class="hover:text-white transition">
+                    Home
+                </a>
+
+                <a href="#schedule"
+                   class="hover:text-white transition">
+                    Schedule
+                </a>
+
+                <a href="#speakers"
+                   class="hover:text-white transition">
+                    Speakers
+                </a>
+
+                <a href="#about"
+                   class="hover:text-white transition">
+                    About
+                </a>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <!-- ================= HERO SECTION ================= -->
+
+    <section id="home"
+             class="bg-[#89216B] text-white">
+
+        <div class="max-w-7xl mx-auto px-6 py-20
+                    text-center">
+
+            <h2 class="text-4xl md:text-6xl
+                       font-bold mb-6">
+
+                Digital Event Schedule Explorer
+
+            </h2>
+
+            <p class="max-w-2xl mx-auto
+                      text-lg md:text-xl
+                      text-indigo-100">
+
+                Explore conference sessions, discover
+                speakers and find the right event according
+                to your track and time.
+
+            </p>
+
+            <a href="#schedule"
+               class="inline-block mt-8
+                      bg-white text-indigo-600
+                      px-8 py-3 rounded-lg
+                      font-semibold
+                      hover:bg-[#fdeff9] hover:scale-105 transition-all duration-500">
+
+                Explore Schedule
+
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= SEARCH SECTION ================= -->
+
+    <section class="max-w-7xl mx-auto px-6 py-10">
+
+        <div class="bg-[#ACBB78] rounded-2xl
+                    shadow-md p-6">
+
+            <h2 class="text-2xl font-bold mb-6">
+                Find an Event
+            </h2>
+
+            <div class="grid grid-cols-1
+                        md:grid-cols-3 gap-4">
+
+                <!-- Search -->
+                <div>
+
+                    <label class="block mb-2
+                                  font-medium">
+
+                        Search
+
+                    </label>
+
+                    <input
+                        id="searchInput"
+                        type="text"
+                        placeholder="Search event or speaker..."
+                        class="w-full border
+                               border-gray-300
+                               rounded-lg px-4 py-3
+                               focus:outline-none
+                               focus:ring-2
+                               focus:ring-indigo-500">
+
+                </div>
+
+
+                <!-- Track -->
+                <div>
+
+                    <label class="block mb-2
+                                  font-medium">
+
+                        Track
+
+                    </label>
+
+                    <select
+                        id="trackFilter"
+                        class="w-full border
+                               border-gray-300
+                               rounded-lg px-4 py-3
+                               bg-white
+                               focus:outline-none
+                               focus:ring-2
+                               focus:ring-indigo-500">
+
+                        <option value="all">
+                            All Tracks
+                        </option>
+
+                        <option value="technology">
+                            Technology
+                        </option>
+
+                        <option value="business">
+                            Business
+                        </option>
+
+                        <option value="design">
+                            Design
+                        </option>
+
+                        <option value="marketing">
+                            Marketing
+                        </option>
+
+                        <option value="technology">
+                            Technology
+                        </option>
+
+                        <option value="technology">
+                            Development
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Time -->
+                <div>
+
+                    <label class="block mb-2
+                                  font-medium">
+
+                        Time
+
+                    </label>
+
+                    <select
+                        id="timeFilter"
+                        class="w-full border
+                               border-gray-300
+                               rounded-lg px-4 py-3
+                               bg-white
+                               focus:outline-none
+                               focus:ring-2
+                               focus:ring-indigo-500">
+
+                        <option>All Time Slots</option>
+                        <option>09:00 AM - 10:00 AM</option>
+                        <option>10:00 AM - 11:00 AM</option>
+                        <option>11:00 AM - 12:00 PM</option>
+                        <option>02:00 PM - 03:00 PM</option>
+                        <option>03:00 PM - 04:00 PM</option>
+                        <option>04:00 PM - 05:00 PM</option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- Reset Button -->
+
+            <button
+                onclick="resetFilters()"
+                class="mt-5 bg-gray-800
+                       text-white px-6 py-2
+                       rounded-lg
+                       hover:bg-gray-700
+                       transition">
+
+                Reset Filters
+
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= SCHEDULE ================= -->
+
+    <section id="schedule"
+             class="max-w-7xl mx-auto px-6 py-10">
+
+        <div class="flex justify-between
+                    items-center mb-8">
+
+            <h2 class="text-3xl font-bold">
+                Event Schedule
+            </h2>
+
+            <span id="eventCount"
+                  class="text-gray-500">
+                6 Events
+            </span>
+
+        </div>
+
+
+        <!-- Event Cards -->
+
+        <div id="eventContainer"
+             class="grid grid-cols-1
+                    md:grid-cols-2
+                    lg:grid-cols-3 gap-6">
+
+
+            <!-- EVENT 1 -->
+
+            <div class="event-card bg-white
+                        rounded-2xl shadow-md
+                        p-6 hover:shadow-xl
+                        transition"
+                 data-track="technology"
+                 data-time="09:00 AM">
+
+                <span class="inline-block
+                             bg-indigo-100
+                             text-indigo-700
+                             px-3 py-1
+                             rounded-full
+                             text-sm font-semibold">
+
+                    Technology
+
+                </span>
+
+                <h3 class="text-xl font-bold
+                           mt-4 mb-3">
+
+                    Future of Artificial Intelligence
+
+                </h3>
+
+                <p class="text-gray-500 mb-5">
+
+                    Discover how artificial
+                    intelligence is changing
+                    modern industries.
+
+                </p>
+
+                <div class="space-y-2
+                            text-gray-600">
+
+                    <p>🕘 09:00 AM - 10:00 AM</p>
+
+                    <p>🎤 Dr. Rahul Sharma</p>
+
+                    <p>📍 Main Hall</p>
+
+                </div>
+
+            </div>
+
+
+            <!-- EVENT 2 -->
+
+            <div class="event-card bg-white
+                        rounded-2xl shadow-md
+                        p-6 hover:shadow-xl
+                        transition"
+                 data-track="business"
+                 data-time="10:00 AM">
+
+                <span class="inline-block
+                             bg-green-100
+                             text-green-700
+                             px-3 py-1
+                             rounded-full
+                             text-sm font-semibold">
+
+                    Business
+
+                </span>
+
+                <h3 class="text-xl font-bold
+                           mt-4 mb-3">
+
+                    Digital Business Strategies
+
+                </h3>
+
+                <p class="text-gray-500 mb-5">
+
+                    Learn effective strategies
+                    for building and growing
+                    digital businesses.
+
+                </p>
+
+                <div class="space-y-2
+                            text-gray-600">
+
+                    <p>🕘 10:00 AM - 11:00 AM</p>
+
+                    <p>🎤 Priya Mehta</p>
+
+                    <p>📍 Hall B</p>
+
+                </div>
+
+            </div>
+
+
+            <!-- EVENT 3 -->
+
+            <div class="event-card bg-white
+                        rounded-2xl shadow-md
+                        p-6 hover:shadow-xl
+                        transition"
+                 data-track="design"
+                 data-time="11:00 AM">
+
+                <span class="inline-block
+                             bg-pink-100
+                             text-pink-700
+                             px-3 py-1
+                             rounded-full
+                             text-sm font-semibold">
+
+                    Design
+
+                </span>
+
+                <h3 class="text-xl font-bold
+                           mt-4 mb-3">
+
+                    Modern UI/UX Design
+
+                </h3>
+
+                <p class="text-gray-500 mb-5">
+
+                    Explore modern principles
+                    of user interface and
+                    user experience design.
+
+                </p>
+
+                <div class="space-y-2
+                            text-gray-600">
+
+                    <p>🕘 11:00 AM - 12:00 PM</p>
+
+                    <p>🎤 Ananya Patel</p>
+
+                    <p>📍 Hall C</p>
+
+                </div>
+
+            </div>
+
+
+            <!-- EVENT 4 -->
+
+            <div class="event-card bg-white
+                        rounded-2xl shadow-md
+                        p-6 hover:shadow-xl
+                        transition"
+                 data-track="marketing"
+                 data-time="02:00 PM">
+
+                <span class="inline-block
+                             bg-orange-100
+                             text-orange-700
+                             px-3 py-1
+                             rounded-full
+                             text-sm font-semibold">
+
+                    Marketing
+
+                </span>
+
+                <h3 class="text-xl font-bold
+                           mt-4 mb-3">
+
+                    Social Media Marketing
+
+                </h3>
+
+                <p class="text-gray-500 mb-5">
+
+                    Learn how social media
+                    can help businesses reach
+                    more customers.
+
+                </p>
+
+                <div class="space-y-2
+                            text-gray-600">
+
+                    <p>🕘 02:00 PM - 03:00 PM</p>
+
+                    <p>🎤 Amit Verma</p>
+
+                    <p>📍 Hall A</p>
+
+                </div>
+
+            </div>
+
+
+            <!-- EVENT 5 -->
+
+            <div class="event-card bg-white
+                        rounded-2xl shadow-md
+                        p-6 hover:shadow-xl
+                        transition"
+                 data-track="technology"
+                 data-time="03:00 PM">
+
+                <span class="inline-block
+                             bg-indigo-100
+                             text-indigo-700
+                             px-3 py-1
+                             rounded-full
+                             text-sm font-semibold">
+
+                    Technology
+
+                </span>
+
+                <h3 class="text-xl font-bold
+                           mt-4 mb-3">
+
+                    Web Development Trends
+
+                </h3>
+
+                <p class="text-gray-500 mb-5">
+
+                    Explore the latest trends
+                    and technologies in
+                    web development.
+
+                </p>
+
+                <div class="space-y-2
+                            text-gray-600">
+
+                    <p>🕘 03:00 PM - 04:00 PM</p>
+
+                    <p>🎤 Neha Joshi</p>
+
+                    <p>📍 Hall B</p>
+
+                </div>
+
+            </div>
+
+
+            <!-- EVENT 6 -->
+
+            <div class="event-card bg-white
+                        rounded-2xl shadow-md
+                        p-6 hover:shadow-xl
+                        transition"
+                 data-track="technology"
+                 data-time="04:00 PM">
+
+                <span class="inline-block
+                             bg-purple-100
+                             text-purple-700
+                             px-3 py-1
+                             rounded-full
+                             text-sm font-semibold">
+
+                    Development
+
+                </span>
+
+                <h3 class="text-xl font-bold
+                           mt-4 mb-3">
+
+                    Building Modern Applications
+
+                </h3>
+
+                <p class="text-gray-500 mb-5">
+
+                    Learn practical techniques
+                    for developing modern
+                    web applications.
+
+                </p>
+
+                <div class="space-y-2
+                            text-gray-600">
+
+                    <p>🕘 04:00 PM - 05:00 PM</p>
+
+                    <p>🎤 Arjun Singh</p>
+
+                    <p>📍 Hall C</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- No Result Message -->
+
+        <div id="noResults"
+             class="hidden text-center
+                    py-16">
+
+            <div class="text-5xl mb-4">
+                🔍
+            </div>
+
+            <h3 class="text-2xl font-bold">
+                No events found
+            </h3>
+
+            <p class="text-gray-500 mt-2">
+                Try changing your search or filters.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= SPEAKERS ================= -->
+
+    <section id="speakers"
+             class="bg-white py-16">
+
+        <div class="max-w-7xl mx-auto px-6">
+
+            <h2 class="text-3xl font-bold
+                       text-center mb-10">
+
+                Featured Speakers
+
+            </h2>
+
+
+            <div class="grid grid-cols-1
+                        md:grid-cols-3 gap-6">
+
+
+                <div class="bg-gray-50
+                            rounded-2xl p-6
+                            text-center">
+
+                    <div class="w-20 h-20 mx-auto
+                                rounded-full
+                                bg-indigo-100
+                                flex items-center
+                                justify-center
+                                text-4xl mb-4">
+
+                        👨‍💻
+
+                    </div>
+
+                    <h3 class="text-xl font-bold">
+                        Dr. Rahul Sharma
+                    </h3>
+
+                    <p class="text-gray-500 mt-2">
+                        AI & Technology Expert
+                    </p>
+
+                </div>
+
+
+                <div class="bg-gray-50
+                            rounded-2xl p-6
+                            text-center">
+
+                    <div class="w-20 h-20 mx-auto
+                                rounded-full
+                                bg-green-100
+                                flex items-center
+                                justify-center
+                                text-4xl mb-4">
+
+                        👩‍💼
+
+                    </div>
+
+                    <h3 class="text-xl font-bold">
+                        Priya Mehta
+                    </h3>
+
+                    <p class="text-gray-500 mt-2">
+                        Business Strategist
+                    </p>
+
+                </div>
+
+
+                <div class="bg-gray-50
+                            rounded-2xl p-6
+                            text-center">
+
+                    <div class="w-20 h-20 mx-auto
+                                rounded-full
+                                bg-pink-100
+                                flex items-center
+                                justify-center
+                                text-4xl mb-4">
+
+                        👩‍🎨
+
+                    </div>
+
+                    <h3 class="text-xl font-bold">
+                        Ananya Patel
+                    </h3>
+
+                    <p class="text-gray-500 mt-2">
+                        UI/UX Designer
+                    </p>
+
+                </div>
+
+                <div class="bg-gray-50
+                            rounded-2xl p-6
+                            text-center">
+
+                    <div class="w-20 h-20 mx-auto
+                                rounded-full
+                                bg-pink-100
+                                flex items-center
+                                justify-center
+                                text-4xl mb-4">
+
+                        🧑‍💻
+
+                    </div>
+
+                    <h3 class="text-xl font-bold">
+                        Amit Verma
+                    </h3>
+
+                    <p class="text-gray-500 mt-2">
+                        social media Expert
+                    </p>
+
+                </div>
+
+                <div class="bg-gray-50
+                            rounded-2xl p-6
+                            text-center">
+
+                    <div class="w-20 h-20 mx-auto
+                                rounded-full
+                                bg-pink-100
+                                flex items-center
+                                justify-center
+                                text-4xl mb-4">
+
+                        👩‍💻
+
+                    </div>
+
+                    <h3 class="text-xl font-bold">
+                        Neha Joshi
+                    </h3>
+
+                    <p class="text-gray-500 mt-2">
+                        web development Expert
+                    </p>
+
+                </div>
+
+                <div class="bg-gray-50
+                            rounded-2xl p-6
+                            text-center">
+
+                    <div class="w-20 h-20 mx-auto
+                                rounded-full
+                                bg-pink-100
+                                flex items-center
+                                justify-center
+                                text-4xl mb-4">
+
+                        🧑‍💻
+
+                    </div>
+
+                    <h3 class="text-xl font-bold">
+                        Arjun Singh
+                    </h3>
+
+                    <p class="text-gray-500 mt-2">
+                        modern web applications
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= ABOUT ================= -->
+
+    <section id="about"
+             class="bg-gray-100 py-16">
+
+        <div class="max-w-4xl mx-auto
+                    px-6 text-center">
+
+            <h2 class="text-3xl font-bold mb-6">
+
+                About the Project
+
+            </h2>
+
+            <p class="text-gray-600
+                      text-lg leading-relaxed">
+
+                Digital Event Schedule Explorer is a
+                web-based application that helps users
+                explore conference schedules in a simple
+                and organized way. Users can search for
+                events and filter sessions according to
+                track and time. The application provides
+                a responsive interface that works on
+                desktop, tablet and mobile devices.
+
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="bg-gray-900 text-white py-8">
+
+        <div class="max-w-7xl mx-auto
+                    px-6 text-center">
+
+            <h2 class="text-xl font-bold mb-2">
+                Digital Event Schedule Explorer
+            </h2>
+
+            <p class="text-gray-400">
+                Explore • Filter • Discover
+            </p>
+
+            <p class="text-gray-500 text-sm mt-4">
+                © 2026 Digital Event Schedule Explorer
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+        // Get elements
+        const searchInput =
+            document.getElementById("searchInput");
+
+        const trackFilter =
+            document.getElementById("trackFilter");
+
+        const timeFilter =
+            document.getElementById("timeFilter");
+
+        const eventCards =
+            document.querySelectorAll(".event-card");
+
+        const eventCount =
+            document.getElementById("eventCount");
+
+        const noResults =
+            document.getElementById("noResults");
+
+
+        // Search and filter function
+
+        function filterEvents() {
+
+            const searchText =
+                searchInput.value.toLowerCase().trim();
+
+            const selectedTrack =
+                trackFilter.value;
+
+            const selectedTime =
+                timeFilter.value;
+
+            let visibleEvents = 0;
+
+
+            eventCards.forEach(function(card) {
+
+                const cardText =
+                    card.innerText.toLowerCase();
+
+                const cardTrack =
+                    card.dataset.track;
+
+                const cardTime =
+                    card.dataset.time;
+
+
+                // Search condition
+                const matchesSearch =
+                    cardText.includes(searchText);
+
+
+                // Track condition
+                const matchesTrack =
+                    selectedTrack === "all" ||
+                    cardTrack === selectedTrack;
+
+
+                // Time condition
+                const matchesTime =
+                    selectedTime === "all" ||
+                    cardTime === selectedTime;
+
+
+                // Show / Hide card
+                if (
+                    matchesSearch &&
+                    matchesTrack &&
+                    matchesTime
+                ) {
+
+                    card.classList.remove("hidden");
+
+                    visibleEvents++;
+
+                } else {
+
+                    card.classList.add("hidden");
+
+                }
+
+            });
+
+
+            // Update event count
+
+            eventCount.innerText =
+                visibleEvents +
+                (visibleEvents === 1
+                    ? " Event"
+                    : " Events");
+
+
+            // Show no result message
+
+            if (visibleEvents === 0) {
+
+                noResults.classList.remove("hidden");
+
+            } else {
+
+                noResults.classList.add("hidden");
+
+            }
+
+        }
+
+
+        // Search event
+
+        searchInput.addEventListener(
+            "input",
+            filterEvents
+        );
+
+
+        // Track filter
+
+        trackFilter.addEventListener(
+            "change",
+            filterEvents
+        );
+
+
+        // Time filter
+
+        timeFilter.addEventListener(
+            "change",
+            filterEvents
+        );
+
+
+        // Reset filters
+
+        function resetFilters() {
+
+            searchInput.value = "";
+
+            trackFilter.value = "all";
+
+            timeFilter.value = "all";
+
+            filterEvents();
+
+        }
+
+    </script>
+
+</body>
+
+</html>
